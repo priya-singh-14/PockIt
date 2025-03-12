@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         primary: "#A69583",
         tan: "#8D7C6A",
+        brown: "#51463a",
         starYellow: "#EFC188",
         whitePrimary: "#FFF6EE",
         lightGrey: "#D9D9D9",
