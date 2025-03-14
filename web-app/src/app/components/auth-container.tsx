@@ -1,14 +1,27 @@
 "use client";
 
-// think about abstracting auth and these helper functions to a utils folder for s.o.c
-import { useState } from "react";
+// think about abstracting auth and these helper functions to a utils folder for separations of concerns
+import { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  User,
 } from "firebase/auth";
 
 import { auth } from "../firebase.js";
 import { useRouter } from "next/navigation";
+
+const setAuthCookie = async (user: User) => {
+  if (user) {
+    const token = await user.getIdToken();
+    // set cookie
+    document.cookie = `authToken=${token}; path=/; max-age=18000; SameSite=Strict`;
+  } else {
+    // clear  cookie
+    document.cookie = "authToken=; path=/; max-age=0";
+  }
+};
 
 const LoginCard = ({ onSwitch }) => {
   const [email, setEmail] = useState("");
@@ -21,7 +34,12 @@ const LoginCard = ({ onSwitch }) => {
     setError("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await setAuthCookie(userCredential.user);
       router.push("/home");
     } catch (error: unknown) {
       setError(error.message);
@@ -144,6 +162,15 @@ const SigninCard = ({ onSwitch }) => {
 
 const AuthContainer = () => {
   const [isLoggingIn, setisLoggingIn] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      await setAuthCookie(user);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div>
       {isLoggingIn ? (

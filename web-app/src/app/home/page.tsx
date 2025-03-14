@@ -1,11 +1,20 @@
-export default function Home() {
+import { cookies } from 'next/headers';
+import { getCurrentUser } from '../utils/serverAuth';
+import LogOut from '../components/logout';
+
+export default async function HomePage() {
+  const cookieStore = cookies();
+  const user = await getCurrentUser(cookieStore);
+  
+  // middleware should handle this
+  if (!user) {
+    return <div>You need to be logged in to view this page.</div>;
+  }
+  
   return (
-    <div className="h-screen w-full">
-      <h1 className="flex text-starYellow text-h2 font-pixel absolute top-6 left-6">
-          starred
-        </h1>
-      <div className="relative font-inconsolata text-h2 pl-6 pt-24">
-        <h2>Welcome Back ___</h2></div>
+    <div>
+      <h1>Welcome, {user.email}!</h1>
+      <LogOut></LogOut>
     </div>
   );
 }
