@@ -3,6 +3,7 @@
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { auth } from "../firebase";
+import { deleteCookie } from "cookies-next";
 
 function LogOut() {
   const router = useRouter();
@@ -10,7 +11,9 @@ function LogOut() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      deleteCookie("authToken");
       router.push("/");
+      router.refresh(); 
     } catch (error) {
       console.error("Logout failed:", error);
     }
