@@ -12,9 +12,10 @@ export default async function HomePage() {
   }
   
   return (
-    <div>
-      <h1>Welcome, {user.email}!</h1>
-      <LogOut></LogOut>
+    <div className='w-full'>
+      <div className='text-right p-10'>
+      <h2 className='font-inconsolata text-h2'>Welcome, {user.email}!</h2>
+      <LogOut></LogOut></div>
     </div>
   );
 }
