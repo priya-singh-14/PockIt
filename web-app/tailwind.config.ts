@@ -5,16 +5,14 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        pixel: ["Pixelify Sans"],
+        noto: ["Noto Sans"],
         inconsolata: ["Inconsolata"],
       },
       colors: {
-        primary: "#A69583",
-        tan: "#8D7C6A",
-        brown: "#51463a",
-        starYellow: "#EFC188",
-        whitePrimary: "#FFF6EE",
-        lightGrey: "#D9D9D9",
+        whitePrimary: "#FFFFFF",
+        blackPrimary: "#05172D",
+        greyPrimary: "#5A5A5A",
+        blueDark:"#122943"
       },
       fontSize: {
         h1: [
@@ -32,21 +30,21 @@ const config: Config = {
           },
         ],
         h3: [
-          "22px",
+          "24px",
           {
             lineHeight: "1.3",
             fontWeight: "400",
           },
         ],
         h4: [
-          "24px",
+          "20px",
           {
             lineHeight: "1.4",
             fontWeight: "400",
           },
         ],
         h5: [
-          "20px",
+          "18px",
           {
             lineHeight: "1.4",
             fontWeight: "400",
@@ -71,9 +69,9 @@ const config: Config = {
         spin: 'spin 10s linear infinite',
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "12px",
+        md: "6px",
+        sm: "4px",
       },
       keyframes: {
         spin: {

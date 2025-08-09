@@ -14,7 +14,7 @@ export default async function HomePage() {
   return (
     <div className='w-full'>
       <div className='text-right p-10'>
-      <h2 className='font-inconsolata text-h2'>Welcome, {user.email}!</h2>
+      <h3 className='font-inconsolata text-h3'>Welcome, {user.email}!</h3>
       <LogOut></LogOut></div>
     </div>
   );

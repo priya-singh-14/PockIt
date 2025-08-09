@@ -7,12 +7,17 @@ import { useRouter } from "next/navigation";
 function SigninCard({ onSwitch }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -38,49 +43,59 @@ function SigninCard({ onSwitch }) {
   };
 
   return (
-    <div className="h-screen w-full flex bg-primary">
-      <div className="border border-starYellow w-4/5 ml-24 my-10 flex justify-left p-10 bg-tan">
-        <div className="w-full">
-          <h2 className="text-whitePrimary text-h2 font-pixel mb-6">Sign Up</h2>
-          <div className="bg-primary text-brown">
-            {error && <p className="p-2 font-inconsolata">{error}</p>}
+    <div className="w-full h-screen flex flex-col items-center justify-center">
+      <div className="w-3/5 flex flex-wrap my-20">
+        <h2 className="text-blackPrimary text-h2 my-20 font-noto font-light">
+          Sign Up
+        </h2>
+        <div className="bg-primary text-greyPrimary text-center">
+            {error && <p className="text-p mt-3 font-inconsolata text-red-800">{error}</p>}
           </div>
-          <form className="w-full" onSubmit={handleSignIn}>
-            <div className="w-[350px]">
-              <input
-                type="email"
-                className="mt-6 w-full text-h5 font-inconsolata bg-transparent placeholder-brown text-whitePrimary border-b border-whitePrimary focus:outline-none focus:border-starYellow"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <label className="font-inconsolata text-lightGrey text-h5">
-                email
-              </label>
+        <form className="w-full" onSubmit={handleSignIn}>
+          <div className="w-full">
+            <input
+              type="email"
+              className="mb-2 w-full text-h5 font-light font-inconsolata bg-transparent placeholder-brown text-greyPrimary border-b border-greyPrimary focus:outline-none"
+              placeholder="enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label className="font-inconsolata text-lightGrey text-h5">
+              email
+            </label>
 
-              <input
-                type="password"
-                className="mt-16 w-full text-h5 text-whitePrimary font-inconsolata bg-transparent placeholder-brown border-b border-white focus:outline-none focus:border-starYellow"
-                placeholder="Create a password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <label className="font-inconsolata text-lightGrey text-h5 mb-1">
-                password
-              </label>
-            </div>
-            <div className="flex flex justify-end">
-              <button type="submit">
-                <h2 className="mt-40 z-20 text-h3 flex bg-starYellow text-black px-4 py-2 font-inconsolata shadow-lg hover:bg-blue-100">
-                  Sign Up
-                </h2>
-              </button>
-            </div>
-          </form>
-          <p className="text-h5 text-lightGrey font-inconsolata text-sm mt-4 text-right hover:text-black">
-            <button onClick={onSwitch}>or Log in</button>
+            <input
+              type="password"
+              className="mb-2 mt-10 w-full text-h5 font-light text-greyPrimary font-inconsolata bg-transparent placeholder-brown border-b border-greyPrimary focus:outline-none"
+              placeholder="create a password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <label className="font-inconsolata text-lightGrey text-h5 mb-1">
+              password
+            </label>
+            <input
+              type="password"
+              className="mb-2 mt-10 w-full text-h5 font-light text-greyPrimary font-inconsolata bg-transparent placeholder-brown border-b border-greyPrimary focus:outline-none"
+              placeholder="confirm password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <label className="font-inconsolata text-lightGrey text-h5 mb-1">
+              confirm password
+            </label>
+          </div>
+          <div className="w-full">
+            <button type="submit" className="w-full">
+              <h3 className="rounded-lg mt-10 text-h3 bg-blueDark text-whitePrimary text-sm p-2 font-inconsolata hover:bg-blackPrimary ">
+                sign up
+              </h3>
+            </button>
+          </div>
+          <p className="text-h5 text-greyPrimary text-center mt-24 font-inconsolata text-sm hover:text-black">
+            <button onClick={onSwitch}>Already have an account? Log In</button>
           </p>
-        </div>
+        </form>
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Pixelify_Sans, Inconsolata} from "next/font/google";
+import { Inconsolata, Noto_Sans} from "next/font/google";
 
 import "./globals.css";
 
-export const pixel = Pixelify_Sans({ subsets: ["latin"], weight: ["400", "500","600", "700"] });
+export const noto = Noto_Sans({ subsets: ["latin"], weight: ["100", "200", "300", "400", "500","600", "700"] });
 export const sans = Inconsolata({ subsets: ["latin"], weight: ["200", "300", "400", "500","600", "700"] });
 
 export const metadata: Metadata = {
