@@ -97,8 +97,8 @@ function LoginCard({ onSwitch }) {
               </h3>
             </button>
           </div>
-          <p className="text-h5 text-greyPrimary text-center mt-48 font-inconsolata text-sm hover:text-black">
-            <button onClick={onSwitch}>Don't have an account? Sign Up</button>
+          <p className=" text-h5 text-greyPrimary text-center mt-48 font-inconsolata text-sm hover:text-black">
+            <button onClick={onSwitch} className="hover:underline">Don't have an account? Sign Up</button>
           </p>
         </form>
       </div>

@@ -93,7 +93,7 @@ function SigninCard({ onSwitch }) {
             </button>
           </div>
           <p className="text-h5 text-greyPrimary text-center mt-24 font-inconsolata text-sm hover:text-black">
-            <button onClick={onSwitch}>Already have an account? Log In</button>
+            <button onClick={onSwitch} className="hover:underline">Already have an account? Log In</button>
           </p>
         </form>
       </div>
