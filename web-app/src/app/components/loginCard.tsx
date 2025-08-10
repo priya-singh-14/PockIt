@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  User,
-} from "firebase/auth";
+import { useState } from "react";
+import { signInWithEmailAndPassword, User } from "firebase/auth";
 
-import { auth } from "../firebase.js";
+import { auth } from "/src/firebase.js";
 import { useRouter } from "next/navigation";
 
 const setAuthCookie = async (user: User) => {
@@ -60,7 +55,9 @@ function LoginCard({ onSwitch }) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <div className="w-3/5 flex flex-wrap my-20">
-        <h2 className="text-blackPrimary text-h2 my-20 font-noto font-light">Log In</h2>
+        <h2 className="text-blackPrimary text-h2 my-20 font-noto font-light">
+          Log In
+        </h2>
         <div className="bg-primary text-blackPrimary">
           {error && <p className="p-2 font-inconsolata">{error}</p>}
         </div>
@@ -98,7 +95,9 @@ function LoginCard({ onSwitch }) {
             </button>
           </div>
           <p className=" text-h5 text-greyPrimary text-center mt-48 font-inconsolata text-sm hover:text-black">
-            <button onClick={onSwitch} className="hover:underline">Don't have an account? Sign Up</button>
+            <button onClick={onSwitch} className="hover:underline">
+              Don't have an account? Sign Up
+            </button>
           </p>
         </form>
       </div>

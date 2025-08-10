@@ -2,7 +2,7 @@
 
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { auth } from "../firebase";
+import { auth } from "/src/firebase.js";
 import { deleteCookie } from "cookies-next";
 
 function LogOut() {

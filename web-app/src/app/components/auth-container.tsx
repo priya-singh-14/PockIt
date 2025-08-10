@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "/src/firebase.js";
 
-import { auth } from "../firebase.js";
 import LoginCard from "./loginCard.tsx";
 import SigninCard from "./signinCard.tsx";
 

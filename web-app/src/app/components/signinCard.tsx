@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
-import { auth } from "../firebase.js";
+import { auth } from "/src/firebase.js";
 import { useRouter } from "next/navigation";
 
 function SigninCard({ onSwitch }) {
