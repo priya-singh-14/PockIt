@@ -3,9 +3,20 @@ import express from "express";
 import axios from "axios";
 
 dotenv.config();
+import cors from "cors";
+import { authenticateToken } from "../auth/middleware.js";
 
 const app = express();
 const PORT = process.env.PORT;
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
@@ -41,6 +52,10 @@ app.get("/api/product-details", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch data" });
   }
+});
+
+app.get("/api/current-user", authenticateToken, (req, res) => {
+  res.json({ user: req.user });
 });
 
 app.listen(PORT, () => {
