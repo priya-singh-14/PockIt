@@ -1,32 +1,16 @@
-"use client";
+import { useLogout } from "../hooks/useLogout";
 
-import { signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { auth } from "/src/firebase.js";
-import { deleteCookie } from "cookies-next";
-
-function LogOut() {
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      deleteCookie("authToken");
-      router.push("/");
-      router.refresh(); 
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
+function LogOutButton() {
+  const logout = useLogout();
 
   return (
     <button
-      onClick={handleLogout}
-      className="font-inconsolata text-brown hover:underline hover:text-starYellow"
+      onClick={logout}
+      className="font-inconsolata text-brown hover:underline"
     >
       Log Out
     </button>
   );
 }
 
-export default LogOut;
+export default LogOutButton;

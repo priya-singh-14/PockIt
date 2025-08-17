@@ -1,3 +1,5 @@
+"use client";
+
 import AuthContainer from "./components/auth-container";
 
 export default function Home() {
@@ -6,7 +8,10 @@ export default function Home() {
       <div className="w-1/2 h-full">
         <AuthContainer />
       </div>
-      <img src="/gradient.png" className="w-1/2 bg-blackPrimary object-cover"></img>
+      <img
+        src="/gradient.png"
+        className="w-1/2 bg-blackPrimary object-cover"
+      ></img>
     </div>
   );
 }

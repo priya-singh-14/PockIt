@@ -1,55 +1,17 @@
+"use client";
+
 import { useState } from "react";
-import { signInWithEmailAndPassword, User } from "firebase/auth";
-
-import { auth } from "/src/firebase.js";
-import { useRouter } from "next/navigation";
-
-const setAuthCookie = async (user: User) => {
-  if (user) {
-    const token = await user.getIdToken();
-    // set cookie
-    document.cookie = `authToken=${token}; path=/; max-age=18000; SameSite=Strict`;
-  } else {
-    // clear cookie
-    document.cookie = "authToken=; path=/; max-age=0";
-  }
-};
+import { useLogin } from "../hooks/useLogIn";
 
 function LoginCard({ onSwitch }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
 
-  const handleLogin = async (e) => {
+  const { login, error, loading } = useLogin();
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      await setAuthCookie(userCredential.user);
-      router.push("/home");
-    } catch (error) {
-      const errorMessages = {
-        "auth/user-not-found": "No account exists with this email address.",
-        "auth/wrong-password": "Incorrect password. Please try again.",
-        "auth/too-many-requests":
-          "Too many login attempts. Please try again later.",
-        "auth/invalid-email": "The email address is not valid.",
-        "auth/invalid-credential":
-          "The email or password you entered is incorrect.",
-        default: "An unexpected error occurred. Please try again.",
-      };
-
-      const errorMessage =
-        errorMessages[error.code] || errorMessages["default"];
-
-      setError(errorMessage);
-    }
+    await login(email, password);
   };
 
   return (

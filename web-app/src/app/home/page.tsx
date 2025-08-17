@@ -1,22 +1,40 @@
 "use client";
-
-import LogOut from '../components/logout';
-import { useCurrentUser } from '../hooks/getCurrentUser';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { fetchProfile } from "../hooks/fetchProfile";
+import LogOutButton from "../components/logout";
 
 export default function HomePage() {
-  const { user, loading, error } = useCurrentUser();
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading user info.</div>;
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const data = await fetchProfile();
+        setProfile(data.profile);
+      } catch (err: any) {
+        if (err.message === "Not authenticated") {
+          router.push("/");
+        } else {
+          console.error(err);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, [router]);
+
+  if (loading) return <p>Loading...</p>;
+  if (!profile) return null;
 
   return (
-    <div className='w-full'>
-      <div className='text-right p-10'>
-        <h3 className='font-inconsolata text-h3'>
-          Welcome{user ? `, ${user.email}` : '!'}
-        </h3>
-        <LogOut />
-      </div>
+    <div>
+      <h2>Welcome, {profile.email || profile.id}!</h2>
+      <LogOutButton></LogOutButton>
     </div>
   );
 }

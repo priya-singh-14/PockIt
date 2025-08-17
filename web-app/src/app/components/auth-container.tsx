@@ -1,42 +1,39 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { onAuthStateChanged, User } from "firebase/auth";
-import { auth } from "/src/firebase.js";
+import supabase from "../../supabaseClient";
+import LoginCard from "./loginCard";
+import SigninCard from "./signinCard";
+import Cookies from "js-cookie";
 
-import LoginCard from "./loginCard.tsx";
-import SigninCard from "./signinCard.tsx";
-
-const setAuthCookie = async (user: User) => {
-  if (user) {
-    const token = await user.getIdToken();
-    // set cookie
-    document.cookie = `authToken=${token}; path=/; max-age=18000; SameSite=Strict`;
+const setAuthCookie = (accessToken: string | null) => {
+  if (accessToken) {
+    Cookies.set("authToken", accessToken, {
+      sameSite: "strict",
+      expires: 0.25,
+    });
   } else {
-    // clear cookie
-    document.cookie = "authToken=; path=/; max-age=0";
+    Cookies.remove("authToken");
   }
 };
 
 const AuthContainer = () => {
-  const [isLoggingIn, setisLoggingIn] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      await setAuthCookie(user);
-    });
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setAuthCookie(session?.access_token || null);
+      }
+    );
 
-    return () => unsubscribe();
+    return () => listener.subscription.unsubscribe();
   }, []);
 
-  return (
-    <div>
-      {isLoggingIn ? (
-        <SigninCard onSwitch={() => setisLoggingIn(false)} />
-      ) : (
-        <LoginCard onSwitch={() => setisLoggingIn(true)} />
-      )}
-    </div>
+  return isLoggingIn ? (
+    <SigninCard onSwitch={() => setIsLoggingIn(false)} />
+  ) : (
+    <LoginCard onSwitch={() => setIsLoggingIn(true)} />
   );
 };
 
