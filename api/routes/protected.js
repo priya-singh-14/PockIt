@@ -27,30 +27,31 @@ router.post("/create", authenticate, async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // check if profile already exists
-    const { data: existingProfile, error: selectError } = await supabase
+    // check if profile exists
+    const { data: existingProfile, error } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", userId)
-      .single();
+      .maybeSingle();
 
-    if (selectError && selectError.code !== "PGRST116") {
-      return res.status(400).json({ error: selectError.message });
+    if (error) {
+      return res.status(400).json({ error: error.message });
     }
 
-    if (existingProfile) {
+    if (existingProfile !== null) {
       return res.status(200).json({ profile: existingProfile });
     }
 
-    // insert new profile
+    // profile doesn't exist, so create it
     const { data: newProfile, error: insertError } = await supabase
       .from("profiles")
       .insert([{ id: userId }])
       .select()
       .single();
 
-    if (insertError)
+    if (insertError) {
       return res.status(400).json({ error: insertError.message });
+    }
 
     res.status(201).json({ profile: newProfile });
   } catch (err) {
@@ -58,5 +59,6 @@ router.post("/create", authenticate, async (req, res) => {
     res.status(500).json({ error: "Failed to create profile" });
   }
 });
+
 
 export default router;
