@@ -12,7 +12,17 @@ const PORT = process.env.PORT;
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: (origin, callback) => {
+      if (
+        origin === process.env.FRONTEND_URL ||
+        origin === process.env.EXTENSION_URL ||
+        origin?.startsWith("chrome-extension://")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("Blocked by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
